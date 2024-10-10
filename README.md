@@ -7,7 +7,9 @@ https://youtu.be/WBkZTJwko9w
 
 There were issues loading the datafile due to GitHub file size restrictions. Therefore the links to download these are below
 
-Postcode - https://osdatahub.os.uk/downloads/open/CodePointOpen
-Output Areas - https://geoportal.statistics.gov.uk/datasets/31dac98df61a4312991646842b147e2f_0/explore
+Postcode - https://osdatahub.os.uk/downloads/open/CodePointOpen  
+
+Output Areas - https://geoportal.statistics.gov.uk/datasets/31dac98df61a4312991646842b147e2f_0/explore  
+
 Census Data - https://www.nomisweb.co.uk/sources/census_2021_bulk
 
