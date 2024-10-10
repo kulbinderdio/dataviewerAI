@@ -1,0 +1,103 @@
+Create a web based application to display UK census data for 2021.
+The interface will be driven by an input postcode. Display the location of this postcode on a map.
+Using the retrieved postcode we want to retrieve the associated output area that this postcode is in.
+Retrieve adjoinging output areas. Display these output areas on the same map as well and then retrieve the different census information for
+each of these areas for the different census categories.
+
+Display the census data in a set of tables with a heading for each one, these are displayed under the map.
+The list of census categories and files can be found below.
+
+We have the following datafiles:  We have a postcode files, an output areas file and a set of census data files.
+The datafiles are as detailed below together with the columns and an example row of data.
+The relationship between the files is as follows
+1. use the pcd column in postcode file to retrieve correct row of data for postcode entered by user. Use the lat and long columns to plot the
+postcode on thd map
+2. use the OA21 column to join on to the output area tables on OA21CD field
+3. To retrieve adjoining output areas you will need to do some spatial queries using the geometry field
+4. Retrieve the census data for each output area using the OA21CD column with the geography column for the census data
+
+Postcode data file:
+pcd,pcd2,pcds,dointr,doterm,oscty,ced,oslaua,osward,parish,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,nhser,ctry,rgn,streg,pcon,eer,teclec,ttwa,pct,itl,statsward,oa01,casward,npark,lsoa01,msoa01,ur01ind,oac01,oa11,lsoa11,msoa11,wz11,sicbl,bua22,ru11ind,oac11,lat,long,lep1,lep2,pfa,imd,calncv,icb,oa21,lsoa21,msoa21
+"AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","S99999999","S99999999","S12000033","S13002843","S99999999","0","385386","0801193","1","S08000020","S99999999","S92000003","S99999999","0","S14000061","S15000001","S09000001","S22000047","S03000012","S30000026","99ZZ00","S00001364","01C30","S99999999","S01000011","S02000007","6","3C2","S00090303","S01006514","S02001237","S34002990","S03000012","","3","1C3",57.101474,-2.242851,"S99999999","","S23000009",6715,"S99999999","S99999999","S00137176","",""
+
+
+The census data is held at Output area (OA) level. The file name is Output_Areas_December_2021_Boundaries_EW_BFE_V9.geojson. It is in GeoJSON format.
+The OA data file format and example row is as follows:n
+{ "type": "Feature", "properties": { "FID": 1, "OA21CD": "E00000001", "LSOA21CD": "E01000001", "LSOA21NM": "City of London 001A", "LSOA21NMW": " ", "BNG_E": 532250, "BNG_N": 181864, "LAT": 51.52022, "LONG": -0.09523, "Shape__Area": 6707.0033264160202, "Shape__Length": 448.10492521558001, "GlobalID": "c981dc33-fe6f-4d55-a084-d12e5d0221e2" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -0.09446007653135, 51.520331569291898 ], [ -0.09448951390807, 51.5202410684022 ], [ -0.094513814913355, 51.520166212288103 ], [ -0.094518224139075, 51.520152444154803 ], [ -0.094546995422363, 51.5200623550759 ], [ -0.094589550193884, 51.519922823203501 ], [ -0.094595011427665, 51.519904917526397 ], [ -0.094606201566966, 51.519884443112403 ], [ -0.094616922780222, 51.519864842362601 ], [ -0.094621340789031, 51.519856730788597 ], [ -0.094504423936553, 51.5198305232311 ], [ -0.094445755188021, 51.519811584210998 ], [ -0.094478614583625, 51.519760976689298 ], [ -0.094510724480408, 51.519768701754003 ], [ -0.094687414602021, 51.5198112133302 ], [ -0.095764645545185, 51.520070376808597 ], [ -0.096094953959224, 51.520149850497198 ], [ -0.096062492544821, 51.520212029604799 ], [ -0.095968043604945, 51.520225612470703 ], [ -0.095988086486673, 51.5202644898025 ], [ -0.096020305327318, 51.520326963949998 ], [ -0.096194189031772, 51.520295174790398 ], [ -0.096484056305313, 51.520242281395603 ], [ -0.096489574747312, 51.520276131495201 ], [ -0.096303654774714, 51.520310693251503 ], [ -0.096287878005775, 51.5203136294827 ], [ -0.095930158939418, 51.520379752999403 ], [ -0.095774026230691, 51.520407918248502 ], [ -0.095652795192976, 51.520429770791601 ], [ -0.095587044933317, 51.520441634279202 ], [ -0.095414559860346, 51.520472698846199 ], [ -0.095330132854825, 51.520487900820001 ], [ -0.095241801553762, 51.520503949361498 ], [ -0.095208284014157, 51.520510039618401 ], [ -0.095053260359462, 51.520538203925298 ], [ -0.094893901137367, 51.520568080826401 ], [ -0.094744458794251, 51.520596098907099 ], [ -0.094726370807619, 51.520599491963303 ], [ -0.094363285997222, 51.520664552200103 ], [ -0.094370377104583, 51.5206404140987 ], [ -0.094374040191232, 51.520627946782298 ], [ -0.094388494136808, 51.520578685794597 ], [ -0.094426423252517, 51.5204470823424 ], [ -0.09446007653135, 51.520331569291898 ] ] ] } },
+
+
+There are many different files for the census data each with different number of columns. I will include details for several
+different files but the system should be flexible enough so additional census data can be added at a later stage.
+
+These are the different files of census data together with their census code. Use the title information for displaying each type of census
+data, as a table heading. Some of the files contain a large number of columns and we want the interface to look as good as possible.
+
+
+TS001	Number of usual residents in households and communal establishments	census2021-ts001-oa.csv
+TS002	Legal partnership status	census2021-ts002-oa.csv
+TS003	Household composition	census2021-ts003-oa.csv
+TS004	Country of birth	census2021-ts004-oa.csv
+TS005	Passports held	census2021-ts005-oa.csv
+TS006	Population density	census2021-ts006-oa.csv
+TS008	Sex	census2021-ts008-oa.csv
+
+
+The format for each of these files at OA level is as follows:
+TS001	Number of usual residents in households and communal establishments
+"date","geography","geography code","Residence type: Total; measures: Value","Residence type: Lives in a household; measures: Value","Residence type: Lives in a communal establishment; measures: Value"
+"2021","E00060274","E00060274",273,273,0
+"2021","E00060275","E00060275",416,416,0
+
+TS002	Legal partnership status
+"date","geography","geography code","Marital and civil partnership status: Total; measures: Value","Marital and civil partnership status: Never married and never registered a civil partnership; measures: Value","Marital and civil partnership status: Married or in a registered civil partnership; measures: Value","Marital and civil partnership status: Married or in a registered civil partnership: Married; measures: Value","Marital and civil partnership status: Married or in a registered civil partnership: Married: Opposite sex; measures: Value","Marital and civil partnership status: Married or in a registered civil partnership: Married: Same sex; measures: Value","Marital and civil partnership status: Married or in a registered civil partnership: In a registered civil partnership; measures: Value","Marital and civil partnership status: Married or in a registered civil partnership: In a registered civil partnership: Opposite sex; measures: Value","Marital and civil partnership status: Married or in a registered civil partnership: In a registered civil partnership: Same sex; measures: Value","Marital and civil partnership status: Separated, but still legally married or still legally in a civil partnership; measures: Value","Marital and civil partnership status: Separated, but still legally married or still legally in a civil partnership: Separated, but still married; measures: Value","Marital and civil partnership status: Separated, but still legally married or still legally in a civil partnership: Separated, but still in a registered civil partnership; measures: Value","Marital and civil partnership status: Divorced or civil partnership dissolved; measures: Value","Marital and civil partnership status: Divorced or civil partnership dissolved: Divorced; measures: Value","Marital and civil partnership status: Divorced or civil partnership dissolved: Formerly in a civil partnership now legally dissolved; measures: Value","Marital and civil partnership status: Widowed or surviving civil partnership partner; measures: Value","Marital and civil partnership status: Widowed or surviving civil partnership partner: Widowed; measures: Value","Marital and civil partnership status: Widowed or surviving civil partnership partner: Surviving partner from civil partnership; measures: Value"
+"2021","E00060274","E00060274",193,96,58,58,58,0,0,0,0,7,7,0,19,19,0,13,13,0
+"2021","E00060275","E00060275",305,155,105,101,99,2,4,0,4,8,8,0,25,25,0,12,12,0
+Create a web based application to display UK census data for 2021.
+
+
+TS003	Household composition
+"date","geography","geography code","Household composition: Total; measures: Value","Household composition:Details of each can be found below. One person household; measures: Value","Household composition: One person household: Aged 66 years and over; measures: Value","Household composition: One person household: Other; measures: Value","Household composition: Single family household; measures: Value","Household composition: Single family household: All aged 66 years and over; measures: Value","Household composition: Single family household: Married or civil partnership couple; measures: Value","Household composition: Single family household: Married or civil partnership couple: No children; measures: Value","Household composition: Single family household: Married or civil partnership couple: Dependent children; measures: Value","Household composition: Single family household: Married or civil partnership couple: All children non-dependent; measures: Value","Household composition: Single family household: Cohabiting couple family; measures: Value","Household composition: Single family household: Cohabiting couple family: No children; measures: Value","Household composition: Single family household: Cohabiting couple family: With dependent children; measures: Value","Household composition: Single family household: Cohabiting couple family: All children non-dependent; measures: Value","Household composition: Single family household: Lone parent family; measures: Value","Household composition: Single family household: Lone parent family: With dependent children; measures: Value","Household composition: Single family household: Lone parent family: All children non-dependent; measures: Value","Household composition: Single family household: Other single family household; measures: Value","Household composition: Single family household: Other single family household: Other family composition; measures: Value","Household composition: Other household types; measures: Value","Household composition: Other household types: With dependent children; measures: Value","Household composition: Other household types: Other, including all full-time students and all aged 66 years and over; measures: Value"
+"2021","E00060274","E00060274",114,29,10,19,80,7,22,10,7,5,14,3,n11,0,37,26,11,0,0,5,2,3
+"2021","E00060275","E00060275",160,35,15,20,116,10,38,10,22,6,38,14,20,4,30,20,10,0,0,9,5,4
+
+
+TS004	Country of birth
+"date","geography","geography code","Country of birth: Total; measures: Value","Country of birth: Europe; measures: Value","Country of birth: Europe: United Kingdom; measures: Value","Country of birth: Europe: EU countries; measures: Value","Country of birth: Europe: EU countries: European Union EU14; measures: Value","Country of birth: Europe: EU countries: European Union EU8; measures: Value","Country of birth: Europe: EU countries: European Union EU2; measures: Value","Country of birth: Europe: EU countries: All other EU countries; measures: Value","Country of birth: Europe: Non-EU countries; measures: Value","Country of birth: Europe: Non-EU countries: All other non-EU countries; measures: Value","Country of birth: Africa; measures: Value","Country of birth: Middle East and Asia; measures: Value","Country of birth: The Americas and the Caribbean; measures: Value","Country of birth: Antarctica and Oceania (including Australasia) and Other; measures: Value","Country of birth: British Overseas ; measures: Value"
+"2021","E00060274","E00060274",273,272,271,1,0,0,0,1,0,0,1,0,0,0,0
+"2021","E00060275","E00060275",416,412,406,6,3,3,0,0,0,0,0,0,0,4,0
+
+
+TS005	Passports held
+"date","geography","geography code","Passports held: Total; measures: Value","Passports held: Europe; measures: Value","Passports held: Europe: United Kingdom; measures: Value","Passports held: Europe: Ireland; measures: Value","Passports held: Europe: Other Europe; measures: Value","Passports held: Europe: Other Europe: EU Member countries; measures: Value","Passports held: Europe: Other Europe: EU Member countries: France; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Germany; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Italy; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Portugal; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Spain; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Lithuania; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Poland; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Romania; measures: Value","Passports held: Europe: Other Europe: EU Member countries: Other EU countries; measures: Value","Passports held: Europe: Other Europe: Rest of Europe; measures: Value","Passports held: Europe: Other Europe: Rest of Europe: Turkey; measures: Value","Passports held: Europe: Other Europe: Rest of Europe: Other Europe; measures: Value","Passports held: Africa; measures: Value","Passports held: Africa: North Africa; measures: Value","Passports held: Africa: Central and Western Africa; measures: Value","Passports held: Africa: South and Eastern Africa; measures: Value","Passports held: Middle East and Asia; measures: Value","Passports held: Middle East and Asia: Middle East; measures: Value","Passports held: Middle East and Asia: Eastern Asia; measures: Value","Passports held: Middle East and Asia: Southern Asia; measures: Value","Passports held: Middle East and Asia: South-East Asia; measures: Value","Passports held: Middle East and Asia: Central Asia; measures: Value","Passports held: The Americas and the Caribbean; measures: Value","Passports held: The Americas and the Caribbean: North America and the Caribbean; measures: Value","Passports held: The Americas and the Caribbean: Central and South America; measures: Value","Passports held: Antarctica and Oceania, including Australasia; measures: Value","Passports held: British Overseas Territories; measures: Value","Passports held: No passport held; measures: Value"
+"2021","E00060274","E00060274",273,180,180,0,0,GEOSException: ParseException: Unknown WKB type 5350,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,93
+"2021","E00060275","E00060275",413,295,291,0,4,4,0,0,0,1,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,118
+
+
+TS006	Population density	census2021-ts006-oa.csv
+"date","geography","geography code","Population Density: Persons per square kilometre; measures: Value"
+"2021","E00060274","E00060274",8247.7
+"2021","E00060275","E00060275",7746.7
+
+
+TS008	Sex	census2021-ts008-oa.csv
+"date","geography","geography code","Sex: All persons; measures: Value","Sex: Female; measures: Value","Sex: Male; measures: Value"
+"2021","E00060274","E00060274",273,143,130
+
+Note : I am developing on a Ubunut 24.04 system with a username of dio. Create the front end using Streamlit.
+
+Lets break this activity down into distinct steps
+1. Create the database schema for storing all of the information detailed above. Make it generic enough to store any census data files.
+Provide full details on how to do this.
+I have had issues previously with creating databases with correct user and permissions, make sure you include any required permissions or
+specific user setup. Include all  required scripts don't just give me an examples or ask me to do the same for other files.
+
+2. Create the database data loader scripts for the files defined.
+These files contain a very large number of rows, find an efficient way to load these into the database.
+
+3. The Streamlit app should allow input of the postcode, which will then be retrieved from the database. We also want the associated output area.
+Together with this retrieve all adjoining output areas. We want to display the census data for all output areas retrieved previously. This data should be displayed
+in tables with the census section heading, e.g TS001 - Number of usual residents in households and communal establishments
+Under each table display a data visualisation showing the data for each different output area. We will need to ensure that we display in each row of each
+table the associated output area name. When we click an output area in the map highlight the associated row in each census data table for that output area.
+The web page should have postcode entry, followed by map display followed by tables of associated census data. If the allows comparable data visualisation
+show this under section table.
